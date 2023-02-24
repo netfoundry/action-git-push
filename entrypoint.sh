@@ -44,6 +44,7 @@ if [ -n "$(git status --porcelain)" ]; then
   git add $INPUT_FILES -v
   git commit -m "$INPUT_MESSAGE"
 fi
+git fetch "$INPUT_REMOTE" "$TARGET_BRANCH"
 git rebase "$INPUT_REMOTE/$TARGET_BRANCH"
 # shellcheck disable=SC2086
 git push "$INPUT_REMOTE" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}
