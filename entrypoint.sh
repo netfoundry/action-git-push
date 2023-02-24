@@ -36,7 +36,7 @@ EOF
 git config user.email "$INPUT_EMAIL"
 git config user.name "$INPUT_NAME"
 
-git fetch "$INPUT_REPOSITORY" "$GITHUB_REF:actions-x-temp-branch"
+git fetch "$INPUT_REMOTE" "$GITHUB_REF:actions-x-temp-branch"
 git switch actions-x-temp-branch
 # if changes then commit
 if [ -n "$(git status --porcelain)" ]; then
@@ -44,6 +44,6 @@ if [ -n "$(git status --porcelain)" ]; then
   git add $INPUT_FILES -v
   git commit -m "$INPUT_MESSAGE"
 fi
-git rebase "$TARGET_BRANCH"
+git rebase "$INPUT_REMOTE/$TARGET_BRANCH"
 # shellcheck disable=SC2086
-git push "$INPUT_REPOSITORY" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}
+git push "$INPUT_REMOTE" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}

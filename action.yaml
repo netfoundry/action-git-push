@@ -24,7 +24,7 @@ inputs:
     description: Space-separated list of files to add to the commit. Defaults to all.
     required: true
     default: .
-  repository:
+  remote:
     description: The repository to push the code to, defaults to origin (e.g. this repository)
     required: true
     default: origin
