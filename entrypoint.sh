@@ -38,9 +38,12 @@ git config user.name "$INPUT_NAME"
 
 git fetch "$INPUT_REPOSITORY" "$GITHUB_REF:actions-x-temp-branch"
 git switch actions-x-temp-branch
-# shellcheck disable=SC2086
-git add $INPUT_FILES -v
-git commit -m "$INPUT_MESSAGE"
+# if changes then commit
+if [ -n "$(git status --porcelain)" ]; then
+  # shellcheck disable=SC2086
+  git add $INPUT_FILES -v
+  git commit -m "$INPUT_MESSAGE"
+fi
 git rebase "$TARGET_BRANCH"
 # shellcheck disable=SC2086
 git push "$INPUT_REPOSITORY" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}
