@@ -13,10 +13,10 @@ fi
 
 cd "$INPUT_DIRECTORY" || exit 1
 
-CURRENT_BRANCH=$(sed "s@refs/heads/@@" <<< "$GITHUB_REF")
+CURRENT_BRANCH=$(echo "$GITHUB_REF"|sed -E "s@refs/heads/@@")
 TARGET_BRANCH=$INPUT_BRANCH
 case $TARGET_BRANCH in "refs/heads/"*)
-  TARGET_BRANCH=$(sed "s@refs/heads/@@" <<< "$TARGET_BRANCH")
+  TARGET_BRANCH=$(echo  "$TARGET_BRANCH"|sed -E "s@refs/heads/@@")
 esac
 
 if [ "$INPUT_FORCE" != "0" ]; then
