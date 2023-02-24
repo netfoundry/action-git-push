@@ -1,5 +1,5 @@
-name: 'Git Commit/Push Changes'
-description: 'Commit changed files back to the upstream repository'
+name: Commit and Push Changes
+description: Accept all changes in directory from current branch and push to target branch
 branding:
   icon: git-commit
   color: blue
@@ -21,7 +21,7 @@ inputs:
     required: true
     default: ${{ github.ref }}
   files:
-    description: The files to add separated by space, defaults to every file
+    description: Space-separated list of files to add to the commit. Defaults to all.
     required: true
     default: .
   repository:
