@@ -42,4 +42,5 @@ git switch actions-x-temp-branch
 git add $INPUT_FILES -v
 git commit -m "$INPUT_MESSAGE"
 git rebase "$TARGET_BRANCH"
-git push "$INPUT_REPOSITORY" "actions-x-temp-branch:$TARGET_BRANCH" "${FORCE:-}"
+# shellcheck disable=SC2086
+git push "$INPUT_REPOSITORY" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}
