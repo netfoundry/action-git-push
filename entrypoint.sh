@@ -13,23 +13,25 @@ fi
 
 cd "$INPUT_DIRECTORY" || exit 1
 
-CURRENT_BRANCH=$(echo "$GITHUB_REF" | sed "s@refs/heads/@@")
+CURRENT_BRANCH=$(sed "s@refs/heads/@@" <<< "$GITHUB_REF")
 TARGET_BRANCH=$INPUT_BRANCH
 case $TARGET_BRANCH in "refs/heads/"*)
-  TARGET_BRANCH=$(echo "$TARGET_BRANCH" | sed "s@refs/heads/@@")
+  TARGET_BRANCH=$(sed "s@refs/heads/@@" <<< "$TARGET_BRANCH")
 esac
 
 if [ "$INPUT_FORCE" != "0" ]; then
   FORCE='--force'
 fi
 
-echo "machine github.com" > "$HOME/.netrc"
-echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
-echo "  password $INPUT_TOKEN" >> "$HOME/.netrc"
+cat <<EOF >| "$HOME/.netrc"
+machine github.com
+  login $GITHUB_ACTOR
+  password $INPUT_TOKEN
 
-echo "machine api.github.com" >> "$HOME/.netrc"
-echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
-echo "  password $INPUT_TOKEN" >> "$HOME/.netrc"
+machine api.github.com
+  login $GITHUB_ACTOR
+  password $INPUT_TOKEN
+EOF
 
 git config user.email "$INPUT_EMAIL"
 git config user.name "$INPUT_NAME"
@@ -44,4 +46,4 @@ git checkout "$CURRENT_BRANCH"
 git merge actions-x-temp-branch
 git branch -d actions-x-temp-branch
 
-git push "$INPUT_REPOSITORY" "$CURRENT_BRANCH:$TARGET_BRANCH" ${FORCE:-}
+git push "$INPUT_REPOSITORY" "$CURRENT_BRANCH:$TARGET_BRANCH" "${FORCE:-}"
