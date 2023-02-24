@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
 
 git config --global --add safe.directory /github/workspace
 if case $INPUT_DIRECTORY in "/"*) ;; *) false;; esac; then
@@ -40,4 +44,4 @@ git checkout "$CURRENT_BRANCH"
 git merge actions-x-temp-branch
 git branch -d actions-x-temp-branch
 
-git push "$INPUT_REPOSITORY" "$CURRENT_BRANCH:$TARGET_BRANCH" $FORCE
+git push "$INPUT_REPOSITORY" "$CURRENT_BRANCH:$TARGET_BRANCH" ${FORCE:-}
