@@ -50,7 +50,7 @@ else
   exit 0
 fi
 git fetch "$INPUT_REMOTE" "$TARGET_BRANCH"
-git rebase "$INPUT_REMOTE/$TARGET_BRANCH" || {
+git rebase -X "$INPUT_STRATEGY" "$INPUT_REMOTE/$TARGET_BRANCH" || {
   echo "ERROR: failed to rebase on target branch: $TARGET_BRANCH" >&2
   git status
   exit 1

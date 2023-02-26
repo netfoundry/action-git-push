@@ -32,6 +32,9 @@ inputs:
     description: The token used to push the code, not needed if you push to the same repository
     required: true
     default: ${{ github.token }}
+  strategy:
+    description: Rebase merge strategy "ours" or "theirs". "ours" is the default because it prefers the changes in the target branch over the proposed changes in our branch. The ours/theirs are confusingly inverted during a rebase.
+    default: ours
   force:
     description: Whether to perform force push
     required: true
