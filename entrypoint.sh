@@ -45,6 +45,15 @@ if [ -n "$(git status --porcelain)" ]; then
   git commit -m "$INPUT_MESSAGE"
 fi
 git fetch "$INPUT_REMOTE" "$TARGET_BRANCH"
-git rebase "$INPUT_REMOTE/$TARGET_BRANCH"
+git rebase "$INPUT_REMOTE/$TARGET_BRANCH" || {
+  echo "ERROR: failed to rebase on target branch: $TARGET_BRANCH" >&2
+  git status
+  exit 1
+}
+
 # shellcheck disable=SC2086
-git push "$INPUT_REMOTE" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-}
+git push "$INPUT_REMOTE" "actions-x-temp-branch:$TARGET_BRANCH" ${FORCE:-} || {
+  echo "ERROR: failed to push to target branch: $TARGET_BRANCH" >&2
+  git status
+  exit 1
+}
