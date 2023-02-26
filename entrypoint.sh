@@ -36,13 +36,18 @@ EOF
 git config user.email "$INPUT_EMAIL"
 git config user.name "$INPUT_NAME"
 
-git fetch "$INPUT_REMOTE" "$GITHUB_REF:actions-x-temp-branch"
-git switch actions-x-temp-branch
 # if changes then commit
 if [ -n "$(git status --porcelain)" ]; then
   # shellcheck disable=SC2086
+  git stash
+  git fetch "$INPUT_REMOTE" "$GITHUB_REF:actions-x-temp-branch"
+  git switch actions-x-temp-branch
+  git stash pop
   git add $INPUT_FILES -v
   git commit -m "$INPUT_MESSAGE"
+else
+  echo "INFO: nothing to commit, bye."
+  exit 0
 fi
 git fetch "$INPUT_REMOTE" "$TARGET_BRANCH"
 git rebase "$INPUT_REMOTE/$TARGET_BRANCH" || {
