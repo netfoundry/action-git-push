@@ -42,7 +42,10 @@ if [ -n "$(git status --porcelain)" ]; then
   git stash
   git fetch "$INPUT_REMOTE" "$GITHUB_REF:actions-x-temp-branch"
   git switch actions-x-temp-branch
-  git stash pop
+  STASH_NAME=$(git stash list | awk -F: '/stash@/{print $1}')
+  if [ -n "$STASH_NAME" ]; then
+    git stash pop
+  fi
   git add $INPUT_FILES -v
   git commit -m "$INPUT_MESSAGE"
 else
