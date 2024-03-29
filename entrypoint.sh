@@ -39,7 +39,6 @@ git config user.name "$INPUT_NAME"
 # if changes then commit
 if [ -n "$(git status --porcelain)" ]; then
   # shellcheck disable=SC2086
-  git stash
   git fetch "$INPUT_REMOTE" "$GITHUB_REF:actions-x-temp-branch"
   git switch actions-x-temp-branch
   git add $INPUT_FILES -v
